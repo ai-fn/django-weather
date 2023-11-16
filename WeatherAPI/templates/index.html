@@ -1,0 +1,268 @@
+{% load static %}
+{% load custom_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Weather app</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+		<script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AsOdC9M6GAxnToMiAe68sKys6SgTPhStjJVg0qMtlK_NNX3ympcK9Wix_WnqZn5j' async defer></script>
+</head>
+
+<body onload="loadMap()">
+	<div class="col-sm-12 navbar navbar-expand-lg d-flex navbar-dark bd-navbar sticky-top bg-dark" style="justify-content: space-around;">
+		<div class="title">
+			<h4 style="margin-left: 40px;">Weather</h4>
+		</div>
+		<div class="utils d-flex">
+			<div class="search-form">
+				<form class="" action="{% url 'search_name' %}">
+					<input style="border-radius: 5px;" placeholder="Search city..." type="text" name="city-name" required>
+					<button class="btn btn-outline-success" type="submit">Search</button>
+				</form>	
+			</div>
+			<div class="switch-container">
+				<div id="selected" style="left: 2pt;"></div>
+				<div id="metric" class="option">Metric: °C, m/s</div>
+				<div id="imperial" class="option">Imperial: °F, mph</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container main-container">
+		<div class="alerts">
+			{% include 'alerts.html' %}
+		</div>
+		<div class="d-flex top-container">
+			<div class="current-weather-container col-md-5">
+				<div class="card">
+					<div class="col-md-12">
+						<div class="card-body">
+							<div class="card-header d-flex" style="background-color: transparent;">
+								<div>
+									<div id="location-info">
+										<span class="orange-text">{{ cw.location.loc_t }}</span>
+										<h4 style="margin: 0;">{{ cw.city }}</h4>
+										<span>{{ cw.location.country }},</span>
+										<span>{{ cw.location.region }}</span>
+									</div>
+								</div>
+								<div>
+									<div class="current-temp d-flex">
+										<img src="{{ cw.current.condition.icon }}" class="pic">
+										<span class="heading"><span class="temp-data">{{ cw.current.temp_c }}</span><span class="temp-symbol">°C</span></span>
+									</div>
+									<div class="bold">Feels like <span class="temp-data">{{ cw.current.feelslike_c }}</span><span class="temp-symbol">°C</span>. {{cw.current.condition.text }}</div>
+									<ul class="weather-items orange-side standart-padding text-container">
+										<li>
+											<div class="wind-line">
+												<svg data-v-47880d39="" viewBox="0 0 1000 1000"
+													enable-background="new 0 0 1000 1000" xml:space="preserve"
+													class="icon-small"
+													style="transform: rotate({{ cw.current.wind_degree }}deg);">
+													<g data-v-47880d39="" fill="#48484a">
+														<path data-v-47880d39=""
+															d="M510.5,749.6c-14.9-9.9-38.1-9.9-53.1,1.7l-262,207.3c-14.9,11.6-21.6,6.6-14.9-11.6L474,48.1c5-16.6,14.9-18.2,21.6,0l325,898.7c6.6,16.6-1.7,23.2-14.9,11.6L510.5,749.6z">
+														</path>
+														<path data-v-47880d39=""
+															d="M817.2,990c-8.3,0-16.6-3.3-26.5-9.9L497.2,769.5c-5-3.3-18.2-3.3-23.2,0L210.3,976.7c-19.9,16.6-41.5,14.9-51.4,0c-6.6-9.9-8.3-21.6-3.3-38.1L449.1,39.8C459,13.3,477.3,10,483.9,10c6.6,0,24.9,3.3,34.8,29.8l325,898.7c5,14.9,5,28.2-1.7,38.1C837.1,985,827.2,990,817.2,990z M485.6,716.4c14.9,0,28.2,5,39.8,11.6l255.4,182.4L485.6,92.9l-267,814.2l223.9-177.4C454.1,721.4,469,716.4,485.6,716.4z">
+														</path>
+													</g>
+												</svg>
+												<span class="speed-data">{{ cw.wind }}</span> <span class="speed-symbol">m/s</span> {{ cw.current.wind_dir }}</span>
+											</div>
+										</li>
+										<li>
+											<svg data-v-7bdd0738="" data-v-3208ab85="" width="96pt" height="96pt"
+												viewBox="0 0 96 96" class="icon">
+												<g data-v-7bdd0738=""
+													transform="translate(0,96) scale(0.100000,-0.100000)"
+													fill="#48484a" stroke="none">
+													<path data-v-7bdd0738="" d="M351 854 c-98 -35 -179 -108 -227 -202 -27 -53 -29 -65 -29 -172 0
+														-107 2 -119 29 -172 38 -75 104 -141 180 -181 58 -31 66 -32 176 -32 110 0
+														118 1 175 32 77 40 138 101 178 178 31 57 32 65 32 175 0 110 -1 118 -32 176
+														-40 76 -106 142 -181 179 -49 25 -71 29 -157 32 -73 2 -112 -1 -144 -13z m259
+														-80 c73 -34 126 -86 161 -159 24 -50 29 -73 29 -135 0 -62 -5 -85 -29 -135
+														-57 -119 -161 -185 -291 -185 -130 0 -234 66 -291 185 -24 50 -29 73 -29 135
+														0 130 66 234 185 291 82 40 184 41 265 3z">
+													</path>
+													<path data-v-7bdd0738="" d="M545 600 c-35 -35 -68 -60 -80 -60 -27 0 -45 -18 -45 -45 0 -33 -50
+														-75 -89 -75 -18 0 -41 -5 -53 -11 -20 -11 -20 -11 3 -35 12 -13 33 -24 46 -24
+														17 0 23 -6 23 -23 0 -13 10 -33 23 -45 30 -28 47 -13 47 43 0 32 6 47 28 68
+														15 15 37 27 48 27 26 0 44 18 44 44 0 12 26 47 60 81 l60 61 -28 27 -28 27
+														-59 -60z">
+													</path>
+												</g>
+											</svg>
+											{{ cw.current.pressure_mb }}hPa
+										</li>
+										<li>
+											<span class="symbol">Humidity:</span>
+											{{ cw.current.humidity }}%
+										</li>
+										<li>
+											<span>UV:</span>
+											{{ cw.current.uv }}
+										</li>
+										<li>
+											<span>Max cloud: </span>
+											{{ cw.current.cloud }}%
+										</li>
+										<li>
+											<span>Visability:</span>
+											{{ cw.current.vis_km }}km
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="map-container col-md-7">
+				<div style="position:relative;overflow:hidden;" id="map">
+				</div>
+			</div>
+		</div>
+
+		<div class="d-flex bottom-container">
+			<div class="main-container col-md-7">
+				<div class="card">
+					<div class="col-md-12">
+						<div class="card-body">
+							<h5>Hourly forecast</h5>
+							<div class="hourly-forecast ">
+								<img class="graph" src="{% url 'graph' %}" alt="Graph">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="main-container col-md-5">
+				<div class="card forecast-container">
+					<div class="col-md-12">
+						<div class="card-body">
+							<h5>{{ cw.forecastday|length }}-day forecast</h5>
+							<div class="daily-container">
+								<ul class="day-list" id="day-list">
+									{% for day in cw.forecastday %}
+										<li class="day-value" id="day-{{ forloop.counter }}-value">
+											<span>{{ day.day_name }}</span>
+											<div class="day-list-values">
+												<div
+													style="display: flex; justify-content: flex-start; align-items: center;">
+													<img class="pic" src="{{ day.day.condition.icon }}"
+														alt="day-icon">
+													<span><span class="temp-data">{{ day.day.maxtemp_c }}</span> / <span class="temp-data">{{ day.day.mintemp_c}}</span><span class="temp-symbol">°C</span></span>
+												</div>
+												<span class="sub" style="width: 110px; text-align: right;">{{day.day.condition.text }}</span>
+												<span class="shevron-container">
+													<svg data-v-5ed3171e="" width="12px" height="12px"
+														viewBox="0 0 512 512" class="icon-down">
+														<path fill="#48484A"
+															d="M98.9,184.7l1.8,2.1l136,156.5c4.6,5.3,11.5,8.6,19.2,8.6c7.7,0,14.6-3.4,19.2-8.6L411,187.1l2.3-2.6 
+															c1.7-2.5,2.7-5.5,2.7-8.7c0-8.7-7.4-15.8-16.6-15.8v0H112.6v0c-9.2,0-16.6,7.1-16.6,15.8C96,179.1,97.1,182.2,98.9,184.7z">
+														</path>
+													</svg>
+												</span>
+											</div>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer class="footer">
+			<div class="col-md-12 d-flex footer-container">
+				<span>Dev by Andrew</span>
+			</div>
+		</footer>
+
+		
+	</div>
+	<script src="{% static 'js/index.js' %}"></script>
+	<script>
+		let ul = document.getElementById('day-list');
+		let ulParent = ul.parentElement;
+		let elems = ul.getElementsByClassName('day-value')
+		let optionMetric = document.getElementById('metric');
+		let optionImperial = document.getElementById('imperial');
+		let optionSelected = document.getElementById('selected')
+		const arrElems = Array.from(elems);
+
+		optionImperial.onclick = function () {
+			optionSelected.classList.add('slideRight');
+			setTimeout(
+				function() {
+					optionSelected.classList.remove('slideRight');
+				},
+				1400
+			);
+			changeData()
+			optionSelected.style.left = '72pt';
+		}
+
+		optionMetric.onclick = function () {
+			optionSelected.classList.add('slideLeft');
+			setTimeout(
+				function() {
+					optionSelected.classList.remove('slideLeft');
+				},
+				1400
+			);
+			changeData()
+			optionSelected.style.left = '2pt';
+		}
+
+		for (let el of elems) {
+			el.addEventListener('click', function () {
+				let index = arrElems.indexOf(el)
+				showDropdown(index)
+			})
+		}
+		function showDropdown(id) {
+			ul.style.display = 'none';
+			{% for day in cw.forecastday %}
+				if (id == "{{ forloop.counter }}" - '1') {
+					ulParent.insertAdjacentHTML(
+						'beforeend',
+						`{% include 'forecastday.html' with day=day %}`
+					);
+					let forecastContainer = document.getElementById('forecast-container');
+					let closeUl = document.getElementById('close-dropdown')
+
+					closeUl.onclick = function () {
+						forecastContainer.remove();
+						ul.style.display = 'block';
+					}
+					changeData(objIn=forecastContainer)
+				}
+			{% endfor %}
+		}
+
+		function loadMap(){
+			var map = new Microsoft.Maps.Map('#map', {
+				credentials: 'AsOdC9M6GAxnToMiAe68sKys6SgTPhStjJVg0qMtlK_NNX3ympcK9Wix_WnqZn5j'
+			});
+
+			map.setView({
+				center: new Microsoft.Maps.Location({{cw.location.lat}}, {{cw.location.lon}}),
+				zoom: 12
+			});
+		}
+	</script>
+</body>
+
+</html>

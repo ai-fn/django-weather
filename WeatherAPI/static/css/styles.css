@@ -1,0 +1,242 @@
+body {
+    color: white;
+    padding: 0;
+    font-family: Space Grotesk, Arial, sans-serif;
+    font-size: 14px;
+    min-height: 100%;
+}
+.baseTd {
+    margin: 10px;
+    border: none;
+}
+.main-container {
+    margin-top: 2rem;
+}
+.footer {
+    width: 100%;
+    margin-bottom: 10px;
+    color: gray;
+    justify-items: center;
+}
+.footer-container {
+    justify-content: center;
+}
+.current-weather-container {
+    display: block;
+}
+.orange-text {
+    color: #eb6e4b;
+}
+.orange-side {
+    border-left: 1px solid #eb6e4b;
+}
+.card-header {
+    flex-direction: column;
+    justify-content: space-between;
+}
+.heading {
+    font-size: 34px;
+    font-weight:400;
+    margin-right: 8pt;
+}
+.pic {
+    height: 40px;
+    width: 40px;
+}
+.small-pic {
+    width: 30px;
+}
+#location-info {
+    margin-bottom: 1rem;
+}
+.bold {
+    font-weight: 600;
+}
+.weather-items {
+    margin-top: 4pt;
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    line-height: 20px;
+}
+.weather-items li {
+    margin-right: 16pt;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.standart-padding {
+    padding-left: 16pt;
+    padding-right: 16pt;
+}
+.text-container {
+    max-width: 300px;
+}
+.icon {
+    width: auto;
+    height: 12pt;
+}
+.icon-small {
+    height: 8pt;
+}
+.symbol {
+    margin-right: 4pt;
+}
+.day-list { 
+    list-style: none;
+    padding-left: 0;
+    width: 100%;
+    margin: 0;
+    border-radius: 4pt;
+    height: auto;
+}
+.day-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 2pt 4pt;
+    height: 40px;
+    border-radius: 4pt;
+}
+.day-list li .day-list-values {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-basis: 60%;
+}
+.sub {
+    color: #8a8a8a;
+    font-size: 10px;
+}
+.day-list li.day-value:hover, #close-dropdown {
+    background-color: rgba(72,72,74,.05);
+}
+.daily-detail-container {
+    height: 290px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    border-radius: 8pt;
+    overflow-y: auto;
+    padding: 8pt;
+}
+.top-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.top-section p {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+table td.row-name {
+    color: #8a8a8a;
+    font-size: 10px;
+    text-align: left;
+    text-transform: uppercase;
+}
+table th {
+    font-weight: 400;
+}
+table th, table td {
+    padding: 2pt 4pt;
+}
+table {
+    text-align: center;
+    margin-bottom: 10px;
+}
+.item-container {
+    display: flex;
+    align-items: center;
+}
+.item-container .item {
+    margin-right: 16pt;
+}
+.item {
+    display: flex;
+    flex-direction: column;
+}
+.daily-container {
+    transition: height 1s;
+}
+.hourly-forecast {
+    overflow: auto;
+}
+.bottom-container, .top-container {
+    justify-content: space-between;
+}
+.forecast-container {
+    height: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Space Grotesk", Arial, sans-serif !important;
+    font-weight: 700;
+    line-height: 1.1;
+    color: inherit;
+}
+.card, .card-header {
+    border: none;
+}
+.switch-container {
+    display: flex;
+    color: #48484A;
+    flex-direction: row;
+    border-radius: 4pt;
+    background-color: #ececed;
+    width: 140pt;
+    height: 20pt;
+    position: relative;
+}
+.switch-container #selected {
+    position: absolute;
+    background-color: #fff;
+    width: 66pt;
+    height: 16pt;
+    top: 2pt;
+    bottom: 2pt;
+    border-radius: 4pt;
+}
+.switch-container .option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    z-index: 1;
+    cursor: pointer;
+}
+.slideLeft {
+    animation-name: slideLeft;
+    animation-duration: 1.5s;
+}
+
+.slideRight {
+    animation-name: slideRight;
+    animation-duration: 1.5s;
+}
+.utils {
+    justify-content: space-between;
+    align-items: center;
+}
+.search-form {
+    margin-right: 5pt;
+}
+@keyframes slideLeft {
+    0% {
+        left: 72px;
+    }
+    100% {
+        left: 2pt;
+    }
+}
+@keyframes slideRight {
+    0% {
+        left: 2px;
+    }
+    100% {
+        left: 72pt;
+    }
+}

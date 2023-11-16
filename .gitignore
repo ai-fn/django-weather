@@ -1,0 +1,15 @@
+.idea
+db.sqlite3
+*.log
+*.imi
+*.xml
+venv
+static/admin
+static/rest_framework
+__pycache__/
+*/__pycache__/
+*.py[cod]
+.pyc
+.env
+*/migrations
+.env
