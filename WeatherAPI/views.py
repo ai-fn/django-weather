@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 fig: Figure
 CITY_FORECAST_CACHE_PREFIX = "FORECAST_CACHE_PREFIX"
-CITY_FORECAST_CACHE_DURATION = 86_400
+CITY_FORECAST_CACHE_DURATION = 3_600
 
 
 class IndexWeatherView(View):
@@ -51,24 +51,28 @@ def graph_view(request):
 def create_graph(time, temp_data, humidity_data, wind_data, text_data, precip_data) -> Figure:
     fig, ax = plt.subplots(figsize=(20, 4))
 
-    hours = map(lambda i: i.strftime('%H%p').lower(), time)
+    hours = map(lambda i: i.strftime('%I%p').lower(), time)
     time = [i.hour for i in time]
+    xticks = range(time[0], time[0] + 24)
 
-    x = np.linspace(time[0], time[-1], 100)
-    poly_coeffs = np.polyfit(time, temp_data, 12)
+    x = np.linspace(xticks[0], xticks[-1], 100)
+    poly_coeffs = np.polyfit(xticks, temp_data, 12)
     y = np.polyval(poly_coeffs, x)
 
     labels = [f"{t}\n" + "\n".join(text_data[i].split()) + f"\n{wind_data[i]}m/s" for i, t in enumerate(hours)]
 
     # Plot data
     ax.plot(x, y, label="Temperature", color="#f2a28c")
-    ax.set_xticks(time)
+    ax.set_xticks(xticks)
     ax.set_xticklabels(labels)
+
+    yticks_labels = ax.get_yticklabels()
+    ax.set_yticklabels([yticks_label.get_text() + "°C" for yticks_label in yticks_labels])
 
     ax2 = ax.twinx()
     ax2.set_ylim(0, max(precip_data) + 1 if max(precip_data) else 1)
 
-    bars = ax2.bar(time, precip_data, alpha=0.5, width=0.7, color='lightgray', label='Humidity')
+    bars = ax2.bar(xticks, precip_data, alpha=0.5, width=0.7, color='lightgray', label='Humidity')
     font = {
         'size': 8,
         'ha': 'left',
@@ -89,7 +93,7 @@ def create_graph(time, temp_data, humidity_data, wind_data, text_data, precip_da
     ax.legend(loc='upper left')
     ax2.legend(loc='upper right')
 
-    plt.subplots_adjust(left=0.03, right=0.97, bottom=0.3, top=0.98)
+    plt.subplots_adjust(left=0.06, right=0.97, bottom=0.3, top=0.94)
     return fig
 
 
@@ -122,8 +126,12 @@ def get_weather_data(city_name: str) -> dict:
             return r
         forecast = r['forecast']
 
+        hours = [i for i in r['forecast']['forecastday'][0]['hour'][dt.now().hour:]]
+        if len(hours) < 24:
+            hours += r['forecast']['forecastday'][1]['hour'][:24 - len(hours)]
+
         time, temp_data, humidity_data, wind_data, text_data, precip_data = [], [], [], [], [], []
-        for hour in r['forecast']['forecastday'][0]['hour']:
+        for hour in hours:
             time.append(dt.strptime(hour['time'], "%Y-%m-%d %H:%M").time())
             temp_data.append(hour['temp_c'])
             humidity_data.append(hour['humidity'])
@@ -165,7 +173,6 @@ def get_weather_data(city_name: str) -> dict:
         )
         logger.debug("Set cache forecast for city: %s" % city_name)
     else:
-        fig = cached_forecast['fig']
         city_weather = cached_forecast['cw']
         logger.debug("Return forecast data from cache for city %s" % city_name)
     context = {"cw": city_weather}
