@@ -21,7 +21,6 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 
-fig: Figure
 CITY_FORECAST_CACHE_PREFIX = "FORECAST_CACHE_PREFIX"
 CITY_FORECAST_CACHE_DURATION = 3_600
 
@@ -37,8 +36,9 @@ class IndexWeatherView(View):
         return render(request, "index.html", context=get_weather_data(self.city))
 
 
-def graph_view(request):
-    global fig
+def graph_view(request, city_name):
+    key = get_city_forecast_cache_key(city_name)
+    fig = cache.get(key=key)['fig']
 
     # Save the figure as an image
     canvas = FigureCanvas(fig)
@@ -98,12 +98,9 @@ def create_graph(time, temp_data, humidity_data, wind_data, text_data, precip_da
 
 
 def search_city(request):
-    city = "London"
-
-    if request.GET['city-name']:
-        city = request.GET['city-name']
-    logger.debug("Requested weather info for %s city" % city)
-    context = get_weather_data(city)
+    city_name = request.GET['city-name']
+    logger.debug("Requested weather info for %s city" % city_name)
+    context = get_weather_data(city_name)
     if 'error' in context:
         messages.warning(request, _(context['error']['message']))
         return redirect('index')
@@ -111,8 +108,6 @@ def search_city(request):
 
 
 def get_weather_data(city_name: str) -> dict:
-    global fig
-
     cache_key = get_city_forecast_cache_key(city_name)
     cached_forecast = cache.get(key=cache_key)
 
