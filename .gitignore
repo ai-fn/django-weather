@@ -14,3 +14,4 @@ __pycache__/
 */migrations
 .env
 WeatherAPI/templatetags/test.py
+*/static

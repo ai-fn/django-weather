@@ -115,7 +115,7 @@ body {
     background-color: rgba(72,72,74,.05);
 }
 .daily-detail-container {
-    height: 290px;
+    height: 310px;
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
@@ -179,4 +179,64 @@ h1, h2, h3, h4, h5, h6 {
 }
 .card, .card-header {
     border: none;
+}
+.switch-container {
+    display: flex;
+    color: #48484A;
+    flex-direction: row;
+    border-radius: 4pt;
+    background-color: #ececed;
+    width: 140pt;
+    height: 20pt;
+    position: relative;
+}
+.switch-container #selected {
+    position: absolute;
+    background-color: #fff;
+    width: 66pt;
+    height: 16pt;
+    top: 2pt;
+    bottom: 2pt;
+    border-radius: 4pt;
+}
+.switch-container .option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    z-index: 1;
+    cursor: pointer;
+}
+.slideLeft {
+    animation-name: slideLeft;
+    animation-duration: 1.5s;
+}
+
+.slideRight {
+    animation-name: slideRight;
+    animation-duration: 1.5s;
+}
+.utils {
+    justify-content: space-between;
+    align-items: center;
+}
+.search-form {
+    margin-right: 5pt;
+}
+@keyframes slideLeft {
+    0% {
+        left: 72px;
+    }
+    100% {
+        left: 2pt;
+    }
+}
+@keyframes slideRight {
+    0% {
+        left: 2px;
+    }
+    100% {
+        left: 72pt;
+    }
 }
