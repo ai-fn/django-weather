@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_NAME: weatherDB
+      POSTGRES_PASSWORD: db_password
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - weather_network
+
+  server:
+    build:
+      context: .
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_PASSWORD: db_password
+      DB_NAME: weatherDB
+      DB_USER: postgres
+    restart: always
+    networks:
+      - weather_network
+
+volumes:
+  pg_data:
+
+networks:
+  weather_network:
+    driver: bridge
