@@ -12,6 +12,5 @@ __pycache__/
 .pyc
 .env
 */migrations
-.env
 WeatherAPI/templatetags/test.py
 */static
