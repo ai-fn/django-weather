@@ -24,6 +24,9 @@ services:
       DB_PASSWORD: db_password
       DB_NAME: weatherDB
       DB_USER: postgres
+      WEATHER_API_CODE: api_code
+      SECRET_KEY: secret_key
+      DEBUG: True
     restart: always
     networks:
       - weather_network
