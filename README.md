@@ -30,7 +30,7 @@ Most configurations are in `setting.py`, others are in backend configurations.
 
 I set many `setting` configuration with my environment variables (such as: `SECRET_KEY`, `DEBUG` and some email configuration parts.) and they did NOT been submitted to the `GitHub`. You can change these in the code with your own configuration or just add them into your environment variables.
 
-In this project utilizes Bing Map API for display searched place, so in order to make it work, you need to get your own API Key on (https://www.bingmapsportal.com/)[https://www.bingmapsportal.com/] and replace `'Your API KEY'` in WeatherAPI/templates/index.html at 'loadMap' function.
+In this project utilizes Bing Map API for display searched place, so in order to make it work, you need to get your own API Key on [bingmapsportal](https://www.bingmapsportal.com/) and replace `'Your API KEY'` in WeatherAPI/templates/index.html at 'loadMap' function.
 
 ## Docker Compose
 
