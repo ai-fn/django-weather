@@ -60,18 +60,6 @@ ROOT_URLCONF = 'WeatherApp.urls'
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
-]
-
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    'http://localhost:8000',
-]
-
-CORS_ORIGIN_WHITELIST = [
-    'https://www.bing.com',
-]
-
 CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
